@@ -31,39 +31,6 @@ header {
   }
 }
 
-.card {
-  border: 1px solid #f3f3f3;
-  width: 220px;
-  padding: 30px;
-  border-radius: 40px;
-  transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
-
-  &:hover {
-    box-shadow: 0px 14px 30px rgba(0, 0, 0, 0.06);
-    transform: translateY(-5px);
-  }
-
-  .favourite {
-    position: absolute;
-    cursor: pointer;
-  }
-
-  span {
-    font-size: 12px;
-    opacity: 0.5;
-    text-transform: uppercase;
-  }
-
-  b {
-    font-size: 13px;
-  }
-
-  h5 {
-    font-weight: 400;
-    font-size: 14px;
-  }
-}
-
 .button {
   background: #ffffff;
   border: 1px solid #dbcece;
