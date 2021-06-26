@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import Card from './components/Card/';
 import Header from './components/Header';
 import Drawer from './components/Drawer';
@@ -9,12 +10,16 @@ const arr = [{name: "Мужские Кроссовки Nike Blazer Mid Suede", p
              {name: "Кроссовки Puma X Aka Boku Future Rider", price: 8999, imageUrl: '/img/sneakers/4.jpg'},
             ]
 
+
+
 function App() {
+  const [cartOpened, setCartOpened] = React.useState(false);
+
   return (
   <div className="wrapper clear">  
 
-    <Drawer />
-    <Header />
+    {cartOpened ? <Drawer /> : null}
+    <Header onClickCart={() => setCartOpened(true)}/>
 
     <div className="content p-40">
           <div className="d-flex align-center mb-40 justify-between">
@@ -27,11 +32,15 @@ function App() {
 
           <div className="d-flex justify-between">
             {
-              arr.map((obj) => (<Card key={obj} 
-                                      name={obj.name} 
-                                      price={obj.price} 
-                                      imageUrl={obj.imageUrl}/>))
-            }
+              arr.map((obj) => (
+              <Card key={obj} 
+                    name={obj.name} 
+                    price={obj.price} 
+                    imageUrl={obj.imageUrl}
+                    onClickFavourite={() => console.log('Clicked on favourite')}
+                    onClickPlus={() => console.log('Clicked on plus')}
+              />
+            ))}
           </div>
     </div>
   </div>
