@@ -10,16 +10,14 @@ const arr = [{name: "Мужские Кроссовки Nike Blazer Mid Suede", p
              {name: "Кроссовки Puma X Aka Boku Future Rider", price: 8999, imageUrl: '/img/sneakers/4.jpg'},
             ]
 
-
-
 function App() {
   const [cartOpened, setCartOpened] = React.useState(false);
 
   return (
   <div className="wrapper clear">  
 
-    {cartOpened ? <Drawer /> : null}
-    <Header onClickCart={() => setCartOpened(true)}/>
+    {cartOpened && <Drawer onClose={() => setCartOpened(false)}/>}
+    <Header onClickCart={() => setCartOpened(true)} />
 
     <div className="content p-40">
           <div className="d-flex align-center mb-40 justify-between">
