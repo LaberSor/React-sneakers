@@ -44,6 +44,24 @@ header {
   border: 1px solid #f3f3f3;
   padding: 0 15px;
   border-radius: 10px;
+  position: relative;
+
+  .clear {
+    position: absolute;
+    right: 0;
+    width: 20px;
+    height: 20px;
+    top: 13px;
+    right: 15px;
+
+    cursor: pointer;
+    opacity: 0.5;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
 
   input {
     border: 0;
@@ -87,6 +105,16 @@ header {
     flex: 1;
     overflow: auto;
     margin-bottom: 40px;
+  }
+
+  .removeBtn {
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 }
 

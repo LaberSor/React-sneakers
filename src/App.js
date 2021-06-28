@@ -10,16 +10,26 @@ function App() {
   const [items, setItems] = React.useState([]);
   const [cartItems, setCartItems] = React.useState([]);
   const [cartOpened, setCartOpened] = React.useState(false);
+  const [searchValue, setSearсhValue] = React.useState('');
+
 
   React.useEffect(() => 
   {fetch('https://60d83b626f13520017a681d3.mockapi.io/items')
   .then(response => {return response.json()})
   .then(json => {setItems(json)});
-}, [])
+  }, [])
   
   const onAddToCart = (obj) => {
-    setCartItems((prev) => [...prev, obj]);
+    setCartItems((prev) => [...prev, obj]); 
   };
+
+  const onChangeSearchInput = (event) => {
+    setSearсhValue(event.target.value);
+  }
+
+  const onClickSearchClear = () => {
+    setSearсhValue('');
+  }
 
   return (
   <div className="wrapper clear">  
@@ -29,10 +39,11 @@ function App() {
 
     <div className="content p-40">
           <div className="d-flex align-center mb-40 justify-between">
-            <h1>Все кроссовки</h1>
+            <h1>{searchValue ? `Поиск по запросу: "${searchValue}"` : "Все кроссовки"}</h1>
             <div className="search-block d-flex">
               <img src="/img/search.svg" alt="Search" className="mr-5"/>
-              <input placeholder="Поиск..."/>
+              {searchValue && <img className="clear" onClick={onClickSearchClear} src="/img/btn-remove.svg" alt="Clear"/>}
+              <input onChange={onChangeSearchInput} value={searchValue} placeholder="Поиск..."/>
             </div>
           </div>
 

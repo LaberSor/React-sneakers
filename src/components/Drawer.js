@@ -5,11 +5,11 @@ function Drawer({onClose, items = []}) {
     <div className="overlay">
         <div className="drawer">
           <h2 className="d-flex justify-between mb-20">Корзина
-          <img className="removeBtn cu-p" src="/img/btn-remove.svg" alt="Close" onClick={onClose}/></h2>
+          <img className="removeBtn" src="/img/btn-remove.svg" alt="Close" onClick={onClose}/></h2>
 
           <div className="items">
-          {
-            items.map((obj) => (
+          { 
+           items.map((obj) => (
               <div className="cartItem d-flex align-center mb-20">
                 <div style={{ backgroundImage: `url(${obj.imageUrl})` }} className="cartItemImg">
                 </div>  
