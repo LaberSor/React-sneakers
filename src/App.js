@@ -15,30 +15,32 @@ function App() {
   const [cartOpened, setCartOpened] = React.useState(false);
   const [searchValue, setSearсhValue] = React.useState('');
   const [favourites, setFavourites] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   
   React.useEffect(() => 
-  {axios.get('https://60d83b626f13520017a681d3.mockapi.io/items')
-  .then(response => {
-    setItems(response.data);
-  });
-  axios.get('https://60d83b626f13520017a681d3.mockapi.io/cart')
-  .then(response => {
-    setCartItems(response.data);
-  });
-  axios.get('https://60d83b626f13520017a681d3.mockapi.io/favourites')
-  .then(response => {
-    setFavourites(response.data);
-  });
+  { 
+    async function fetchData () {
+      setIsLoading(true);
+      const cartResponse = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/cart');
+      const favouritesResponse = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/favourites');
+      const itemsResponse = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/items');
+      setIsLoading(false);
+
+      setCartItems(cartResponse.data);
+      setFavourites(favouritesResponse.data);
+      setItems(itemsResponse.data);
+    }
+
+    fetchData();
   }, [])
   
   const onAddToCart = (obj) => {
-    if (favourites.find(item => item.id === obj.id)) {
-      axios.delete(`https://60d83b626f13520017a681d3.mockapi.io/cart/${obj.id}`, obj);
-      setCartItems((prev) => prev.filter(item => item.id !== obj.id));
-    } else {
-      axios.post('https://60d83b626f13520017a681d3.mockapi.io/cart', obj)
-      setCartItems((prev) => [...prev, obj]);  
-    }
+      if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
+          axios.delete(`https://60d83b626f13520017a681d3.mockapi.io/cart/${obj.id}`, obj);
+          setCartItems((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)));
+      } else {
+          axios.post('https://60d83b626f13520017a681d3.mockapi.io/cart', obj)
+          setCartItems((prev) => [...prev, obj]);}
   };
 
   const onAddToFavourite = async (obj) => {
@@ -87,11 +89,14 @@ function App() {
       <Home 
         items={items}
         searchValue={searchValue}
+        cartItems={cartItems}
+        favourites={favourites}
         setSearсhValue={setSearсhValue}
         onChangeSearchInput={onChangeSearchInput}
         onAddToFavourite={onAddToFavourite}
         onAddToCart={onAddToCart}
         onClickSearchClear={onClickSearchClear}
+        isLoading={isLoading}
       />
     </Route>
     
