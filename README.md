@@ -3,6 +3,7 @@
 ## Стек
 * React + хуки
 * React-router
+* React Skeleton (content preloader)
 * Axios 
 * Macro-css
 * SCSS
