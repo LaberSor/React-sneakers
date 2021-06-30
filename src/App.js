@@ -6,6 +6,7 @@ import axios from 'axios';
 import { Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Favourites from './pages/Favourites';
+import AppContext from './context/Context';
 
 
 function App() {
@@ -70,21 +71,22 @@ function App() {
   }
 
   return (
-  <div className="wrapper clear">  
+  <AppContext.Provider value={{items, cartItems, favourites}}>
+    <div className="wrapper clear">  
 
     {cartOpened && <Drawer 
     items={cartItems} 
     onClose={() => setCartOpened(false)}
     onRemove={onRemoveItem}/>}
     <Header onClickCart={() => setCartOpened(true)} />
-
+    
     <Route path="/favourites" exact>
       <Favourites 
         onAddToFavourite={onAddToFavourite}
-        items={favourites}
+        /* items={favourites} */
       />
     </Route>
-
+    
     <Route path="/" exact>
       <Home 
         items={items}
@@ -100,7 +102,8 @@ function App() {
       />
     </Route>
     
-  </div>
+    </div>
+  </AppContext.Provider>
     
   );
 }
