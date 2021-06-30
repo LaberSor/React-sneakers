@@ -2,8 +2,8 @@ import React from 'react';
 import Card from '../components/Card';
 import AppContext from '../context/Context';
 
-function Favourites({ /* items = [], */ onAddToFavourite }) {
-  const { favourites } = React.useContext(AppContext);
+function Favourites() {
+  const { favourites, onAddToFavourite } = React.useContext(AppContext);
   return (
     <div className="content p-40">
       <div className="d-flex align-center mb-40 justify-between">
