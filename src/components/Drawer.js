@@ -1,35 +1,35 @@
 import React from 'react';
 import Info from './Info';
-import AppContext from '../context/Context';
 import axios from 'axios';
-
+import { useCart } from './hooks/useCart'
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
 function Drawer({onClose, onRemove, items = []}) {
-  const { cartItems, setCartItems } = React.useContext(AppContext);
+  
   const [isOrderComplete, setIsOrderComplete] = React.useState(false);
   const [isloading, setIsloading] = React.useState(false);
   const [orderId, setOrderId] = React.useState(false);
-  
+  const { cartItems, setCartItems, totalPrice } = useCart();
 
   const onClickOrder = async () => {
     try {
       setIsloading(true);
-      const {data} = await axios.post('https://60d83b626f13520017a681d3.mockapi.io/orders', { items: cartItems });
+      const {data} = await axios.post('https://60d83b626f13520017a681d3.mockapi.io/orders', {
+        items: cartItems });
       
       setOrderId(data.id);
       setIsOrderComplete(true);
       setCartItems([]); 
 
-      for (let i; i < cartItems.length; i++) {
+      for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
-        await axios.delete('https://60d83b626f13520017a681d3.mockapi.io/cart' + item.id);
+        await axios.delete('https://60d83b626f13520017a681d3.mockapi.io/cart', item.id);
         await delay(1000);
       }
       
     } catch (err) {
-      console.log('Не удалось создать заказ');
+      console.log('Ошибка при создании заказа');
     }
     setIsloading(false);
   }
@@ -68,12 +68,12 @@ function Drawer({onClose, onRemove, items = []}) {
               <li className="d-flex">
                 <span>Итого:</span>
                 <div></div>
-                <b>21 498 руб.</b>
+                <b>{totalPrice} руб.</b>
               </li>
               <li className="d-flex">
                 <span>Налог 5%:</span>
                 <div></div>
-                <b>1074 руб.</b>
+                <b>{totalPrice / 100 * 5} руб.</b>
               </li>
             </ul>
             <button disabled={isloading} onClick={onClickOrder} className="greenButton">Оформить заказ <img src="/img/arrow.svg" alt="Arrow" /></button>

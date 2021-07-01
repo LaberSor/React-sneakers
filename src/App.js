@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Favourites from './pages/Favourites';
 import AppContext from './context/Context';
+import Orders from './pages/Orders';
 
 
 function App() {
@@ -101,6 +102,10 @@ function App() {
         onClickSearchClear={onClickSearchClear}
         isLoading={isLoading}
       />
+    </Route>
+
+    <Route path="/orders" exact>
+      <Orders />
     </Route>
     
     </div>
