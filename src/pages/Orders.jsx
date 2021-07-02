@@ -1,10 +1,8 @@
 import axios from 'axios';
 import React from 'react';
 import Card from '../components/Card';
-/* import AppContext from '../context/Context'; */
 
 function Orders() {
-  /* const {} = React.useContext(AppContext); */
   const [orders, setOrders] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
