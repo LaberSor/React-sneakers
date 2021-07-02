@@ -57,8 +57,9 @@ function App() {
 
   const onAddToFavourite = async (obj) => {
     try {
-      if (favourites.find(item => item.id === obj.id)) {
+      if (favourites.find(item => Number(item.id) === Number(obj.id))) {
         axios.delete(`https://60d83b626f13520017a681d3.mockapi.io/favourites/${obj.id}`, obj);
+        setFavourites((prev) => prev.filter((item) => Number(item.id) !== Number(obj.id)));
       } else {
         const {data} = await axios.post('https://60d83b626f13520017a681d3.mockapi.io/favourites', obj)
         setFavourites((prev) => [...prev, data]); 
@@ -101,7 +102,7 @@ function App() {
 
     <Header onClickCart={() => setCartOpened(true)} />
     
-    <Route path="favourites" exact>
+    <Route path="/favourites" exact>
       <Favourites/>
     </Route>
     
@@ -120,7 +121,7 @@ function App() {
       />
     </Route>
 
-    <Route path="orders" exact>
+    <Route path="/orders" exact>
       <Orders />
     </Route>
     

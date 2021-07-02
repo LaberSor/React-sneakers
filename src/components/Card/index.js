@@ -36,7 +36,12 @@ function Card({id, name, imageUrl, price, onFavourite, onPlus, favourited = fals
             
           </ContentLoader>) : (<>{isFavourite && <div className={styles.favourite}>
           <img 
-          src={isFavourite ? "img/heart-liked.svg" : "img/heart-unliked.svg"} 
+          src={isFavourite && (
+            <div className={styles.favorite} onClick={handleClickFavourite}>
+              <img src={isFavourite ? 'img/heart-liked.svg' : 'img/heart-unliked.svg'} alt="Unliked" />
+            </div>
+          )} 
+
           alt="Unliked" 
           onClick={handleClickFavourite}/>
           </div>}
