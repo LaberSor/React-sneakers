@@ -22,27 +22,37 @@ function App() {
   React.useEffect(() => 
   { 
     async function fetchData () {
-      setIsLoading(true);
-      const cartResponse = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/cart');
-      const favouritesResponse = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/favourites');
-      const itemsResponse = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/items');
-      setIsLoading(false);
+      try {
+        setIsLoading(true);
+        const [ cartResponse, favouritesResponse, itemsResponse ] = 
+         await Promise.all([axios.get('https://60d83b626f13520017a681d3.mockapi.io/cart'), 
+                     axios.get('https://60d83b626f13520017a681d3.mockapi.io/favourites'), 
+                     axios.get('https://60d83b626f13520017a681d3.mockapi.io/items')]);
+        setIsLoading(false);
 
-      setCartItems(cartResponse.data);
-      setFavourites(favouritesResponse.data);
-      setItems(itemsResponse.data);
+        setCartItems(cartResponse.data);
+        setFavourites(favouritesResponse.data);
+        setItems(itemsResponse.data);
+      } catch (error) {
+        console.log("Ошибка при загрузке данных");
+      }
     }
-
     fetchData();
   }, [])
   
-  const onAddToCart = (obj) => {
-      if (cartItems.find((item) => Number(item.id) === Number(obj.id))) {
-          axios.delete(`https://60d83b626f13520017a681d3.mockapi.io/cart/${obj.id}`, obj);
-          setCartItems((prev) => prev.filter(item => Number(item.id) !== Number(obj.id)));
-      } else {
-          axios.post('https://60d83b626f13520017a681d3.mockapi.io/cart', obj)
-          setCartItems((prev) => [...prev, obj]);}
+  const onAddToCart = async (obj) => {
+      try {
+        const findItem = cartItems.find((item) => Number(item.parentId) === Number(obj.id))
+        if (findItem) {
+          setCartItems((prev) => prev.filter(item => Number(item.parentId) !== Number(obj.id)));
+          await axios.delete(`https://60d83b626f13520017a681d3.mockapi.io/cart/${findItem.id}`, obj); 
+        } else {
+          const {data} = await axios.post('https://60d83b626f13520017a681d3.mockapi.io/cart', obj);
+          setCartItems((prev) => [...prev, data]);
+        }
+      } catch (error) {
+          console.log("Ошибка при добавлении в корзину");
+      }
   };
 
   const onAddToFavourite = async (obj) => {
@@ -58,9 +68,13 @@ function App() {
     }
   };
 
-  const onRemoveItem = (id) => {
-      axios.delete(`https://60d83b626f13520017a681d3.mockapi.io/cart/${id}`)
+  const onRemoveItem = async (id) => {
+    try {
+      await axios.delete(`https://60d83b626f13520017a681d3.mockapi.io/cart/${id}`)
       setCartItems((prev) => prev.filter(item => item.id !== id));
+    } catch (error) {
+      console.log("Ошибка при удалении из корзины")
+    }
   };
 
   const onChangeSearchInput = (event) => {
@@ -72,17 +86,19 @@ function App() {
   }
 
   const isItemAdded = (id) => {
-    return cartItems.some((obj) => Number(obj.id) === Number(id));
+    return cartItems.some((obj) => Number(obj.parentId) === Number(id));
   }
 
   return (
-  <AppContext.Provider value={{items, cartItems, favourites, isItemAdded, onAddToFavourite, setCartOpened, setCartItems}}>
+  <AppContext.Provider value={{items, cartItems, favourites, isItemAdded, onAddToFavourite, setCartOpened, setCartItems, onAddToCart}}>
     <div className="wrapper clear">  
 
-    {cartOpened && <Drawer 
+    <Drawer 
     items={cartItems} 
     onClose={() => setCartOpened(false)}
-    onRemove={onRemoveItem}/>}
+    onRemove={onRemoveItem}
+    opened={cartOpened}/>
+
     <Header onClickCart={() => setCartOpened(true)} />
     
     <Route path="/favourites" exact>
@@ -97,9 +113,9 @@ function App() {
         favourites={favourites}
         setSearсhValue={setSearсhValue}
         onChangeSearchInput={onChangeSearchInput}
+        onClickSearchClear={onClickSearchClear}
         onAddToFavourite={onAddToFavourite}
         onAddToCart={onAddToCart}
-        onClickSearchClear={onClickSearchClear}
         isLoading={isLoading}
       />
     </Route>

@@ -6,15 +6,15 @@ import AppContext from '../../context/Context';
 
 function Card({id, name, imageUrl, price, onFavourite, onPlus, favourited = false, added = false, loading = false}) {
     const { isItemAdded } = React.useContext(AppContext);
-
     const [isFavourite, setIsFavourite] = React.useState(favourited);
+    const obj = {name, parentId: id, imageUrl, price, id};
 
     const handleClickPlus = () => {
-      onPlus({name, imageUrl, price, id});
+      onPlus(obj);
     };
 
     const handleClickFavourite = () => {
-      onFavourite({name, imageUrl, price, id});
+      onFavourite(obj);
       setIsFavourite(!isFavourite);
     }
 
@@ -34,12 +34,12 @@ function Card({id, name, imageUrl, price, onFavourite, onPlus, favourited = fals
             <rect x="0" y="234" rx="5" ry="5" width="80" height="25" /> 
             <rect x="124" y="230" rx="10" ry="10" width="32" height="32" /> 
             
-          </ContentLoader>) : (<><div className={styles.favourite}>
+          </ContentLoader>) : (<>{isFavourite && <div className={styles.favourite}>
           <img 
           src={isFavourite ? "/img/heart-liked.svg" : "/img/heart-unliked.svg"} 
           alt="Unliked" 
           onClick={handleClickFavourite}/>
-          </div>
+          </div>}
           <img width='100%' height={135} src={imageUrl} alt="Sneaker" />
           <h5>{name}</h5>
           <div className="d-flex justify-between align-center">
@@ -48,12 +48,12 @@ function Card({id, name, imageUrl, price, onFavourite, onPlus, favourited = fals
               <b>{price} руб.</b>
             </div>
             
-              <img 
-              className={styles.plus} 
-              onClick={handleClickPlus} width={30} height={30} 
-              src={isItemAdded(id) ? "/img/btn-checked.svg" : "/img/plus.svg"} 
-              alt="plus"
-              />
+            {onPlus && <img 
+            className={styles.plus} 
+            onClick={handleClickPlus} width={30} height={30} 
+            src={isItemAdded(id) ? "/img/btn-checked.svg" : "/img/plus.svg"} 
+            alt="plus"
+            />}
            
           </div></>)}
 
