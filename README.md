@@ -1,6 +1,6 @@
 # Магазин кроссовок React-sneakers
 
-GitHub pages: https://labersor.github.io/
+GitHub pages: https://labersor.github.io/React-sneakers
 
 ## Стек
 * React + хуки
