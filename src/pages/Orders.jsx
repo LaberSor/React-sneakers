@@ -4,20 +4,12 @@ import Card from '../components/Card';
 
 function Orders() {
   const [orders, setOrders] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(true);
-
   React.useEffect(() => {
     (async () => {
-      try {
-        const { data } = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/orders');
-        setOrders(data.map((obj) => obj.items).flat());
-        setIsLoading(false);
-      } catch (error) {
-        console.log('Ошибка при загрузке заказов');
-      }
+      const { data } = await axios.get('https://60d83b626f13520017a681d3.mockapi.io/orders');
+      setOrders(data.map((obj) => obj.items).flat());
     })();
   }, []);
-
   return (
     <div className="content p-40">
       <div className="d-flex align-center mb-40 justify-between">
@@ -25,8 +17,8 @@ function Orders() {
       </div>
 
       <div className="d-flex flex-wrap">
-        {(isLoading ? [...Array(10)] : orders).map((obj, index) => (
-          <Card key={index} loading={isLoading} {...obj} />
+        {[].map((obj, index) => (
+          <Card key={index} favourited={true} onFavourite /* ={onAddToFavourite} */ {...obj} />
         ))}
       </div>
     </div>
