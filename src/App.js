@@ -106,7 +106,7 @@ function App() {
       <Favourites/>
     </Route>
     
-    <Route path="" exact>
+    <Route path="/" exact>
       <Home 
         items={items}
         searchValue={searchValue}
