@@ -90,7 +90,7 @@ function App() {
       <Favourites/>
     </Route>
     
-    <Route path="/React-sneakers" exact>
+    <Route path="/" exact>
       <Home 
         items={items}
         searchValue={searchValue}
