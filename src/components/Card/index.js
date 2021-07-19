@@ -34,17 +34,14 @@ function Card({id, name, imageUrl, price, onFavourite, onPlus, favourited = fals
             <rect x="0" y="234" rx="5" ry="5" width="80" height="25" /> 
             <rect x="124" y="230" rx="10" ry="10" width="32" height="32" /> 
             
-          </ContentLoader>) : (<><div className={styles.favourite}>
-          <img 
-          src={isFavourite && (
-            <div className={styles.favorite} onClick={handleClickFavourite}>
-              <img src={isFavourite ? '/img/heart-liked.svg' : '/img/heart-unliked.svg'} alt="Unliked" />
+          </ContentLoader>) : (
+          <>
+            <div className={styles.favourite}>
+              <img src={isFavourite ?  "/img/heart-liked.svg" : "/img/heart-unliked.svg"} 
+              alt="Unliked" 
+              onClick={handleClickFavourite}
+              />
             </div>
-          )} 
-
-          alt="Unliked" 
-          onClick={handleClickFavourite}/>
-          </div>
           <img width='100%' height={135} src={imageUrl} alt="Sneaker" />
           <h5>{name}</h5>
           <div className="d-flex justify-between align-center">
