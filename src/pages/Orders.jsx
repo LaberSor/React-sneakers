@@ -18,7 +18,7 @@ function Orders() {
 
       <div className="d-flex flex-wrap">
         {[].map((obj, index) => (
-          <Card key={index} favourited={true} onFavourite /* ={onAddToFavourite} */ {...obj} />
+          <Card key={index} favourited={true} onFavourite {...obj} />
         ))}
       </div>
     </div>
