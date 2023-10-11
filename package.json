@@ -8,7 +8,11 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.1",
-    "gh-pages": "^3.2.3",
+    "babel-loader": "^9.1.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "css-loader": "^6.8.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.5.3",
     "macro-css": "^1.0.4",
     "node-sass": "^8.0",
     "react": "^17.0.2",
@@ -16,15 +20,17 @@
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1"
+    "style-loader": "^3.3.3",
+    "web-vitals": "^1.0.1",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   },
   "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "start": "webpack-dev-server --mode=development --open --hot",
+    "build": "webpack --mode=production",
+    "test": "",
+    "deploy": ""
   },
   "eslintConfig": {
     "extends": [
@@ -45,7 +51,9 @@
     ]
   },
   "devDependencies": {
-    "webpack": "^5.75.0",
-    "webpack-cli": "^5.0.1"
+    "@babel/core": "^7.22.20",
+    "@babel/preset-env": "^7.22.20",
+    "@babel/preset-react": "^7.22.15",
+    "sass-loader": "^13.3.2"
   }
 }
