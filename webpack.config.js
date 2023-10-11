@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   entry: path.resolve(__dirname, 'src/index.js'),
@@ -56,6 +57,9 @@ module.exports = {
       favicon: './src/images/logo.png',
     }),
     new CleanWebpackPlugin(),
+    new CopyPlugin({
+      patterns: [{ from: 'src/images', to: 'images' }],
+    }),
   ],
   devServer: {
     static: {
