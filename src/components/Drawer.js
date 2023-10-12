@@ -1,24 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Info from './Info';
 import axios from 'axios';
-import { useCart } from './hooks/useCart';
+import { useCart } from 'core/hooks/useCart';
+import { BASE_URL } from 'core/constants/api';
+import delay from '../core/utils/delay';
 import RemoveIcon from 'images/btn-remove.svg';
 import ArrowIcon from 'images/arrow.svg';
 import CompleteOrderIcon from 'images/complete-order.jpg';
 import EmptyCartIcon from 'images/empty-cart.jpg';
 
-const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
-
 function Drawer({ onClose, onRemove, items = [] }) {
-  const [isOrderComplete, setIsOrderComplete] = React.useState(false);
-  const [isloading, setIsloading] = React.useState(false);
-  const [orderId, setOrderId] = React.useState(false);
+  const [isOrderComplete, setIsOrderComplete] = useState(false);
+  const [isloading, setIsloading] = useState(false);
+  const [orderId, setOrderId] = useState(false);
   const { cartItems, setCartItems, totalPrice } = useCart();
 
   const onClickOrder = async () => {
     try {
       setIsloading(true);
-      const { data } = await axios.post('https://60d83b626f13520017a681d3.mockapi.io/orders', {
+      const { data } = await axios.post(`${BASE_URL}/orders`, {
         items: cartItems,
       });
 
@@ -28,7 +28,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
 
       for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
-        await axios.delete('https://60d83b626f13520017a681d3.mockapi.io/cart', item.id);
+        await axios.delete(`${BASE_URL}/cart`, item.id);
         await delay(1000);
       }
     } catch (err) {

@@ -1,9 +1,10 @@
-import React from 'react';
-import AppContext from '../context/Context';
+import React, { useContext } from 'react';
+import AppContext from 'core/context/Context';
 import Arrow from 'images/arrow.svg';
 
 function Info({ imageUrl, title, description }) {
-  const { setCartOpened } = React.useContext(AppContext);
+  const { setCartOpened } = useContext(AppContext);
+
   return (
     <div className="cartEmpty d-flex align-center justify-center flex-column flex">
       <img src={imageUrl} alt="blankCart" className="mb-20" width={120} />

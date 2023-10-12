@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useCart } from './hooks/useCart';
+import { useCart } from 'core/hooks/useCart';
 import CartIcon from 'images/cart.svg';
 import FavouritesIcon from 'images/favourites.svg';
 import UserIcon from 'images/user.svg';
