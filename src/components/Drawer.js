@@ -36,6 +36,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
     try {
       setIsloading(true);
       const { data } = await axios.post(`${BASE_URL}/orders`, {
+        date: new Date().toISOString(),
         items: cartItems,
       });
 
@@ -45,13 +46,14 @@ function Drawer({ onClose, onRemove, items = [] }) {
 
       for (let i = 0; i < cartItems.length; i++) {
         const item = cartItems[i];
-        await axios.delete(`${BASE_URL}/cart`, item.id);
+        await axios.delete(`${BASE_URL}/cart/${item.mockId}`, item);
         await delay(1000);
       }
     } catch (err) {
       console.log('Ошибка при создании заказа');
+    } finally {
+      setIsloading(false);
     }
-    setIsloading(false);
   };
 
   return (
@@ -113,6 +115,8 @@ function Drawer({ onClose, onRemove, items = [] }) {
                 : 'Добавьте хотя бы одну пару кроссовок, чтобы сделать заказ.'
             }
             imageUrl={isOrderComplete ? CompleteOrderIcon : EmptyCartIcon}
+            buttonTitle="Вернуться назад"
+            onClose={onClose}
           />
         )}
       </div>

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import styles from './Card.module.scss';
 import AppContext from 'core/context/Context';
 import LikedIcon from 'images/heart-liked.svg';
@@ -15,9 +15,8 @@ function Card({
   mockId,
   onFavourite,
   onPlus,
-  favourited = false,
-  added = false,
   loading = false,
+  disabled = false,
 }) {
   const { isItemAdded, favourites } = useContext(AppContext);
   const isFavourite = useMemo(() => favourites.find(item => item.id === id), [favourites, id]);
@@ -30,10 +29,6 @@ function Card({
     onFavourite({ name, imageUrl, price, id, mockId });
   };
 
-  /* React.useEffect(() => {
-    console.log(name, isFavourite);
-  }, [isFavourite]); */
-
   return (
     <div className={styles.card}>
       {loading && !imageUrl ? (
@@ -41,11 +36,13 @@ function Card({
       ) : (
         <>
           <div className={styles.favourite}>
-            <img
-              src={isFavourite ? LikedIcon : UnlikedIcon}
-              alt="Unliked"
-              onClick={handleClickFavourite}
-            />
+            {!disabled && (
+              <img
+                src={isFavourite ? LikedIcon : UnlikedIcon}
+                alt="Unliked"
+                onClick={handleClickFavourite}
+              />
+            )}
           </div>
           <div className={styles.imgWrapper}>
             <img width="100%" height="100%" src={'/' + imageUrl} alt="Sneaker" />
@@ -57,14 +54,16 @@ function Card({
               <b>{price} руб.</b>
             </div>
 
-            <img
-              className={styles.plus}
-              onClick={handleClickPlus}
-              width={30}
-              height={30}
-              src={isItemAdded(id) ? CheckedIcon : PlusIcon}
-              alt="plus"
-            />
+            {!disabled && (
+              <img
+                className={styles.plus}
+                onClick={handleClickPlus}
+                width={30}
+                height={30}
+                src={isItemAdded(id) ? CheckedIcon : PlusIcon}
+                alt="plus"
+              />
+            )}
           </div>
         </>
       )}

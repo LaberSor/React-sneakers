@@ -1,8 +1,12 @@
 import React, { useContext } from 'react';
-import Card from '../components/Card';
+import { useHistory } from 'react-router-dom';
+import Card from 'components/Card';
+import Info from 'components/Info';
 import AppContext from 'core/context/Context';
+import SadIcon from 'images/sad2.svg';
 
 function Favourites() {
+  const navigateHistory = useHistory();
   const { favourites, onAddToFavourite, onAddToCart } = useContext(AppContext);
 
   return (
@@ -12,15 +16,26 @@ function Favourites() {
       </div>
 
       <div className="d-flex flex-wrap">
-        {favourites.map((obj, index) => (
-          <Card
-            key={index}
-            favourited
-            onFavourite={onAddToFavourite}
-            onPlus={onAddToCart}
-            {...obj}
+        {favourites.length > 0 ? (
+          favourites.map((obj, index) => (
+            <Card
+              key={index}
+              favourited
+              onFavourite={onAddToFavourite}
+              onPlus={onAddToCart}
+              {...obj}
+            />
+          ))
+        ) : (
+          <Info
+            imageUrl={SadIcon}
+            title="Закладок нет"
+            description="Вы ничего не добавили"
+            buttonTitle="Вернуться на страницу товаров"
+            onClose={() => navigateHistory.push('/home')}
+            imageWidth={80}
           />
-        ))}
+        )}
       </div>
     </div>
   );

@@ -75,10 +75,6 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    console.log('cartItems in useEffect', cartItems);
-  }, [cartItems]);
-
   const onRemoveItem = async mockId => {
     try {
       await axios.delete(`${BASE_URL}/cart/${mockId}`);
