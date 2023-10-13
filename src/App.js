@@ -42,12 +42,15 @@ function App() {
 
   const onAddToCart = async obj => {
     try {
-      if (cartItems.find(item => Number(item.id) === Number(obj.id))) {
-        axios.delete(`${BASE_URL}/cart/${obj.id}`, obj);
+      const itemFromCart = cartItems.find(item => Number(item.id) === Number(obj.id));
+      console.log(itemFromCart);
+
+      if (itemFromCart) {
+        await axios.delete(`${BASE_URL}/cart/${itemFromCart.mockId}`, obj);
         setCartItems(prev => prev.filter(item => Number(item.id) !== Number(obj.id)));
       } else {
-        axios.post(`${BASE_URL}/cart`, obj);
-        setCartItems(prev => [...prev, obj]);
+        const { data } = await axios.post(`${BASE_URL}/cart`, obj);
+        setCartItems(prev => [...prev, data]);
       }
     } catch (error) {
       toast.error('Не удалось добавить товар в корзину');
@@ -57,8 +60,10 @@ function App() {
 
   const onAddToFavourite = async obj => {
     try {
-      if (favourites.find(item => Number(item.id) === Number(obj.id))) {
-        axios.delete(`${BASE_URL}/${obj.id}`, obj);
+      const itemFromFavourites = favourites.find(item => Number(item.id) === Number(obj.id));
+
+      if (itemFromFavourites) {
+        await axios.delete(`${BASE_URL}/favourites/${itemFromFavourites.mockId}`, obj);
         setFavourites(prev => prev.filter(item => Number(item.id) !== Number(obj.id)));
       } else {
         const { data } = await axios.post(`${BASE_URL}/favourites`, obj);
@@ -71,13 +76,13 @@ function App() {
   };
 
   useEffect(() => {
-    console.log('favourites in useEffect', favourites);
-  }, [favourites]);
+    console.log('cartItems in useEffect', cartItems);
+  }, [cartItems]);
 
-  const onRemoveItem = async id => {
+  const onRemoveItem = async mockId => {
     try {
-      axios.delete(`${BASE_URL}/cart/${id}`);
-      setCartItems(prev => prev.filter(item => item.id !== id));
+      await axios.delete(`${BASE_URL}/cart/${mockId}`);
+      setCartItems(prev => prev.filter(item => item.mockId !== mockId));
     } catch (error) {
       console.log(error);
       toast.error('Ошибка при удалении товара из корзины');

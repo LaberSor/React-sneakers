@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useMemo } from 'react';
 import styles from './Card.module.scss';
 import AppContext from 'core/context/Context';
 import LikedIcon from 'images/heart-liked.svg';
@@ -12,23 +12,27 @@ function Card({
   name,
   imageUrl,
   price,
+  mockId,
   onFavourite,
   onPlus,
   favourited = false,
   added = false,
   loading = false,
 }) {
-  const { isItemAdded } = useContext(AppContext);
-  const [isFavourite, setIsFavourite] = useState(favourited);
+  const { isItemAdded, favourites } = useContext(AppContext);
+  const isFavourite = useMemo(() => favourites.find(item => item.id === id), [favourites, id]);
 
   const handleClickPlus = () => {
     onPlus({ name, imageUrl, price, id });
   };
 
   const handleClickFavourite = () => {
-    onFavourite({ name, imageUrl, price, id });
-    setIsFavourite(!isFavourite);
+    onFavourite({ name, imageUrl, price, id, mockId });
   };
+
+  /* React.useEffect(() => {
+    console.log(name, isFavourite);
+  }, [isFavourite]); */
 
   return (
     <div className={styles.card}>

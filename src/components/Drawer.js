@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Info from './Info';
 import axios from 'axios';
 import { useCart } from 'core/hooks/useCart';
@@ -14,6 +14,23 @@ function Drawer({ onClose, onRemove, items = [] }) {
   const [isloading, setIsloading] = useState(false);
   const [orderId, setOrderId] = useState(false);
   const { cartItems, setCartItems, totalPrice } = useCart();
+
+  useEffect(() => {
+    const closeDrawer = e => {
+      if (e.code === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', closeDrawer);
+
+    return () => {
+      document.body.style.overflow = 'auto';
+
+      window.removeEventListener('keydown', closeDrawer);
+    };
+  }, []);
 
   const onClickOrder = async () => {
     try {
@@ -63,7 +80,7 @@ function Drawer({ onClose, onRemove, items = [] }) {
                     className="removeBtn"
                     src={RemoveIcon}
                     alt="Remove"
-                    onClick={() => onRemove(obj.id)}
+                    onClick={() => onRemove(obj.mockId)}
                   />
                 </div>
               ))}
